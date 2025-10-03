@@ -313,15 +313,26 @@ public class TopicGeneralFragment extends Fragment implements MenuProvider, Util
             final String newAlias = ((TextView) fragmentView.findViewById(R.id.alias)).getText().toString().trim();
 
             UiUtils.updateTopicDesc(mTopic, newTitle, newComment, newDescription, newAlias)
+                    // ...
                     .thenApply(new PromisedReply.SuccessListener<>() {
                         @Override
                         public PromisedReply<ServerMessage> onSuccess(ServerMessage unused) {
                             if (!activity.isFinishing() && !activity.isDestroyed()) {
-                                activity.runOnUiThread(() -> activity.getSupportFragmentManager().popBackStack());
+                                activity.runOnUiThread(() -> {
+                                    // ---> EZT A SORT SZÚRD BE <---
+                                    // Értesítjük a MessageActivity-t, hogy frissítse magát.
+                                    // A 'forceReset = true' biztosítja, hogy a fejléc is újrarajzolódjon.
+                                    ((MessageActivity) activity).changeTopic(mTopic.getName(), true);
+
+                                    // Ez a sor marad a végén, ez lép vissza.
+                                    activity.getSupportFragmentManager().popBackStack();
+                                });
                             }
                             return null;
                         }
                     })
+// ...
+
                     .thenCatch(new UiUtils.ToastFailureListener(activity));
 
             return true;

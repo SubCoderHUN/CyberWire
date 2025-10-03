@@ -390,7 +390,18 @@ public class MessageActivity extends AppCompatActivity
 
                 // Check if another fragment is already visible. If so, don't change it.
             } else if (forceReset || UiUtils.getVisibleFragment(getSupportFragmentManager()) == null) {
-                UiUtils.setupToolbar(this, mTopic.getPub(), mTopicName,
+                // Új kód kezdete
+                VxCard pub = mTopic.getPub();
+                if (mTopic.isP2PType()) {
+                    String displayName = mTopic.getComment();
+                    if (!TextUtils.isEmpty(displayName)) {
+                        if (pub == null) {
+                            pub = new VxCard();
+                        }
+                        pub.fn = displayName; // Felülírjuk a nevet a becenévvel.
+                    }
+                }
+                UiUtils.setupToolbar(this, pub, mTopicName,
                         mTopic.getOnline(), mTopic.getLastSeen(), mTopic.isDeleted());
 
                 // Reset requested or no fragment is visible. Show default and clear back stack.
@@ -1229,7 +1240,20 @@ public class MessageActivity extends AppCompatActivity
                     if (fragment instanceof DataSetChangeListener) {
                         ((DataSetChangeListener) fragment).notifyDataSetChanged();
                     } else if (fragment instanceof MessagesFragment) {
-                        UiUtils.setupToolbar(MessageActivity.this, mTopic.getPub(), mTopic.getName(),
+                        // Új kód kezdete
+                        VxCard pub = mTopic.getPub();
+                        if (mTopic.isP2PType()) {
+                            // Csak P2P csevegésnél próbálkozunk a becenévvel.
+                            String displayName = mTopic.getComment();
+                            // CSAK AKKOR írjuk felül a nevet, ha a becenév NEM ÜRES.
+                            if (!TextUtils.isEmpty(displayName)) {
+                                if (pub == null) {
+                                    pub = new VxCard();
+                                }
+                                pub.fn = displayName;
+                            }
+                        }
+                        UiUtils.setupToolbar(MessageActivity.this, pub, mTopic.getName(),
                                 mTopic.getOnline(), mTopic.getLastSeen(), mTopic.isDeleted());
 
                         ((MessagesFragment) fragment).notifyDataSetChanged(true);

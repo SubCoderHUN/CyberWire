@@ -1381,7 +1381,7 @@ public class Topic<DP, DR, SP, SR> implements LocalData, Comparable<Topic> {
      * @throws NotSubscribedException if the client is not subscribed to the topic
      * @throws NotConnectedException  if there is no connection to the server
      */
-    protected PromisedReply<ServerMessage> setDescription(final MetaSetDesc<DP, DR> desc) {
+    public PromisedReply<ServerMessage> setDescription(final MetaSetDesc<DP, DR> desc) {
         return setMeta(new MsgSetMeta.Builder<DP, DR>().with(desc).build());
     }
 

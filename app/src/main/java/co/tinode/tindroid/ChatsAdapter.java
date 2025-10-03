@@ -303,14 +303,28 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
             details.pos = position;
             details.id = topicName;
 
+// Új kód kezdete
+            String displayName = null;
+            if (topic.isP2PType()) {
+                // Ha P2P (privát) csevegés, próbáljuk meg a becenevet használni.
+                displayName = topic.getComment();
+            }
+
             VxCard pub = topic.getPub();
-            if (pub != null && pub.fn != null) {
-                name.setText(pub.fn);
+            // Ha nincs becenév (vagy nem P2P), használjuk a felhasználó valódi nevét.
+            if (TextUtils.isEmpty(displayName) && pub != null && pub.fn != null) {
+                displayName = pub.fn;
+            }
+
+            if (!TextUtils.isEmpty(displayName)) {
+                name.setText(displayName);
                 name.setTypeface(null, Typeface.NORMAL);
             } else if (topic.isSlfType()) {
+                // Ha 'saját magunk' (mentett üzenetek), akkor a megfelelő címet kapja.
                 name.setText(R.string.self_topic_title);
                 name.setTypeface(null, Typeface.NORMAL);
             } else {
+                // Végső esetben, ha semmi más nincs, egy placeholder szöveget mutat.
                 name.setText(R.string.placeholder_contact_title);
                 name.setTypeface(null, Typeface.ITALIC);
             }

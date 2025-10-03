@@ -105,7 +105,7 @@
 
     <string name="placeholder_contact_title">Névtelen vagy ismeretlen</string>
     <string name="placeholder_topic_title">Névtelen</string>
-    <string name="placeholder_private">Privát jegyzetek</string>
+    <string name="placeholder_private">Becenév</string>
 
     <string name="options_menu">Opciók menü</string>
     <string name="current_user">Te</string>
