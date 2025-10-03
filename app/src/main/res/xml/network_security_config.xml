@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Fejlesztés: mindent enged cleartexten -->
+    <base-config cleartextTrafficPermitted="true" />
+    <!-- + Külön domain-szabály is maradhat -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">cyberwire.ddn.net</domain>
+    </domain-config>
+</network-security-config>

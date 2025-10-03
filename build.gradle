@@ -1,0 +1,68 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://maven.google.com/' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.10.1'
+
+        // For FCM push notifications
+        classpath 'com.google.gms:google-services:4.4.2'
+
+        // Crashlytics
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.3'
+
+        // Legal compliance: plugin to collect and display OSS licenses.
+        classpath 'com.google.android.gms:oss-licenses-plugin:0.10.6'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+// This block encapsulates custom properties and makes them available to all
+// modules in the project.
+ext {
+    version_code = gitVersionCode()
+    version_name = gitVersionName()
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.google.com/' }
+    }
+}
+
+tasks.register('clean', Delete) {
+    delete rootProject.buildDir
+}
+
+// --- Safe fallbacks, ha git nincs / nem ad vissza értéket ---
+static def gitVersionCode() {
+    try {
+        def p = "git rev-list --count HEAD".execute()
+        p.waitFor()
+        def t = p.in.text.trim()
+        return (t?.isInteger()) ? t.toInteger() : 128   // fallback
+    } catch (Throwable ignored) {
+        return 128
+    }
+}
+
+static def gitVersionName() {
+    try {
+        def p = "git describe --tags --always".execute()
+        p.waitFor()
+        def t = p.in.text.trim()
+        if (!t) return "1.2.1"
+        return t.startsWith("v") ? t.substring(1) : t
+    } catch (Throwable ignored) {
+        return "1.2.1"
+    }
+}

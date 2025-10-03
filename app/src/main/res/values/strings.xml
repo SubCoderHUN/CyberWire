@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="asset_statements" translatable="false">[{ \"include\": \"https://web.tinode.co/.well-known/assetlinks.json\" }]</string>
+    <string name="tinode_url" translatable="false">http://cyberwire.ddns.net</string>
+    <string name="emulator_host_name" translatable="false">10.0.2.2:6060</string>
+    <string name="contact_us_uri" translatable="false">mailto:support@tinode.co</string>
+    <string name="terms_of_use_uri" translatable="false">http://cyberwire.ddns.net/terms.html</string>
+    <string name="privacy_policy_uri" translatable="false">http://cyberwire.ddns.net/privacy.html</string>
+    <string name="app_name" translatable="false">CyberWire</string>
+    <string name="app_name_full" translatable="false">CyberWire Chat</string>
+    <string name="copyright" translatable="false">© 2014 – 2025 CyberWire</string>
+    <string name="tinode" translatable="false">CyberWire</string>
+
+    <string name="app_version">Verzió</string>
+
+    <string name="login_hint">Bejelentkezés</string>
+    <string name="password_hint">Jelszó</string>
+    <string name="new_message_hint">Új üzenet</string>
+    <string name="send_message_button_hint">Üzenet küldése</string>
+    <string name="send_image_button_hint">Kép küldése</string>
+    <string name="send_file_button_hint">Fájl küldése</string>
+
+    <string name="sign_in">Belépés</string>
+    <string name="app_description" translatable="false">CyberWire Chat</string>
+    <string name="action_signup">Regisztráció</string>
+    <string name="sign_up">Regisztráció</string>
+    <string name="login_new">Bejelentkezés</string>
+    <string name="password_new">Jelszó</string>
+    <string name="full_name">Teljes név, pl.: Kis Pista</string>
+    <string name="tinode_logo" translatable="false">CyberWire logó</string>
+    <string name="action_cancel">Mégse</string>
+    <string name="settings_host_name">Szerver címe</string>
+    <string name="settings_use_tls">Biztonságos kapcsolat használata</string>
+    <string name="settings_tls_explained">Titkosított kapcsolat a szerverhez (mint a kémfilmekben!)</string>
+    <string name="settings_host_name_explained">Kapcsolódás ide: ’%1$s’</string>
+
+    <string name="typing_indicator_text" translatable="false">Éppen ír…</string>
+    <string name="typing_indicator_many" translatable="false">Többen éppen írnak…</string>
+    <string name="unread_messages_count" translatable="false">%1$d olvasatlan üzenet</string>
+    <string name="new_message_in_topics" translatable="false">Új üzenet: %1$d</string>
+
+
+
+    <!-- access mode definitions -->
+    <string name="modeReadOnly">csak olvasható</string>
+    <string name="modeAdmin">admin</string>
+    <string name="modeOwner">tulaj</string>
+    <string name="modeBlocked">tiltva</string>
+    <!-- mode-like access statuses -->
+    <string name="modeInvited">meghívva</string>
+    <string name="modeRequested">kérelem alatt</string>
+    <string name="modePending">függőben</string>
+
+    <!-- Menu actions -->
+    <string name="action_settings">Beállítások</string>
+    <string name="action_delete">Törlés</string>
+    <string name="action_mute">Némítás</string>
+    <string name="action_unmute">Némítás feloldása</string>
+    <string name="action_clear_messages">Összes üzenet törlése</string>
+    <string name="action_new_chat">Új csevegés</string>
+    <string name="action_about">Névjegy</string>
+    <string name="action_search">Keresés</string>
+    <string name="action_add_contact">Kapcsolat hozzáadása</string>
+    <string name="action_send_now">Küldés most (mert miért ne?)</string>
+    <string name="action_view_details">Részletek megtekintése</string>
+    <string name="action_copy">Másolás</string>
+    <string name="action_offline">Offline módban</string>
+    <string name="action_delete_group">Csevegés törlése…</string>
+    <string name="action_chat_background" translatable="false">Chat háttere</string>
+    <string name="chat_background_set" translatable="false">Háttér beállítva</string>
+    <string name="chat_background_reset" translatable="false">Háttér visszaállítása</string>
+    <string name="action_leave_topic">Kilépés a beszélgetésből…</string>
+    <string name="action_video_call">Videóhívás</string>
+
+    <string name="avatar">Profilkép</string>
+    <string name="image_is_unavailable">A kép nem elérhető</string>
+    <string name="error_login_failed">Bejelentkezés sikertelen: </string>
+    <string name="login_required">Bejelentkezés szükséges</string>
+    <string name="password_required">Jelszó szükséges</string>
+    <string name="error_new_account_failed">Regisztráció sikertelen:</string>
+    <string name="no_chats">Nincs egy darab csevegésed sem\n\n¯\\_(ツ)_/¯</string>
+
+    <!-- ABC index -->
+    <string name="alphabet">\ ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+
+    <string name="tinode_invite_subject">Nézd meg a CyberWire Messengert</string>
+    <string name="tinode_invite_body">Próbáld ki a CyberWire Messengert. Töltsd le innen: https://tinode.co</string>
+
+    <string name="profile_action">CyberWire profil</string>
+    <string name="view_profile">Profil megtekintése</string>
+    <string name="tinode_message">CyberWire üzenet küldése</string>
+    <string name="hint_topic_title">A csoport neve</string>
+    <string name="group_members">Csoporttagok</string>
+    <string name="name_required">Csoportnév kötelező</string>
+    <string name="no_members">Nincs egy árva tag sem</string>
+    <string name="add_one_member">Adj hozzá legalább egy tagot</string>
+    <string name="add_members">Tagok hozzáadása</string>
+    <string name="id">Azonosító:</string>
+    <string name="topic_muted">Némítva</string>
+    <string name="permissions">Jogosultságok</string>
+    <string name="your_permissions">A tieid</string>
+
+    <string name="no_connection">Nincs interneted (kávészünet?)</string>
+    <string name="action_failed">A művelet nem sikerült</string>
+
+    <string name="placeholder_contact_title">Névtelen vagy ismeretlen</string>
+    <string name="placeholder_topic_title">Névtelen</string>
+    <string name="placeholder_private">Privát jegyzetek</string>
+
+    <string name="options_menu">Opciók menü</string>
+    <string name="current_user">Te</string>
+    <string name="default_permissions">Alapértelmezett jogok</string>
+    <string name="auth_permissions">Hitelesített felhasználók</string>
+    <string name="anon_permissions">Névtelen felhasználók</string>
+    <string name="topic_private">Extra infó (csak neked látszik)</string>
+    <string name="edit_permissions">Jogok szerkesztése</string>
+
+    <string name="permission_owner">Teljes kontroll (tulaj)</string>
+    <string name="permission_join">Csatlakozás</string>
+    <string name="permission_read">Olvasás</string>
+    <string name="permission_write">Írás</string>
+    <string name="permission_approve">Új tagok jóváhagyása</string>
+    <string name="permission_share">Tagok meghívása</string>
+    <string name="permission_notifications">Értesítések fogadása</string>
+    <string name="permission_delete">Üzenetek törlése</string>
+
+    <string name="send_message">Üzenet küldése</string>
+    <string name="change_permissions">Jogok módosítása</string>
+    <string name="make_owner">Tulajjá tenni</string>
+    <string name="remove_from_group">Eltávolítás</string>
+    <string name="block">Tiltás</string>
+    <string name="confirm_member_removal">%1$s eltávolítása innen: „%2$s”?</string>
+    <string name="confirm_member_ban">%1$s eltávolítása és tiltása innen: „%2$s”?</string>
+    <string name="confirm_leave_topic">Biztos ki akarsz lépni ebből a beszélgetésből? (Pedig még csak most lett izgalmas!)</string>
+    <string name="confirm_delete_topic">Biztos törölni akarod ezt a beszélgetést mindenkinél?</string>
+    <string name="confirm_delete_multiple_topics">Biztos törölni akarod ezeket a csevegéseket?</string>
+    <string name="modeWriteOnly">csak írás</string>
+    <string name="read_receipts_enabled">Olvasási visszaigazolások küldése</string>
+    <string name="typing_notifications_enabled">Gépelésjelzés mutatása (hogy mindenki lássa, szenvedsz a billentyűn)</string>
+    <string name="logout">Kijelentkezés</string>
+    <string name="change_password">Jelszócsere</string>
+    <string name="account_settings">Fiók beállításai</string>
+    <string name="enter_new_password">Adj meg egy új jelszót</string>
+    <string name="confirm_logout">Biztos ki akarsz lépni? (Kint hideg van…)</string>
+    <string name="invalid_login">Érvénytelen bejelentkezés</string>
+
+    <string name="default_attachment_name" translatable="false">file_attachment</string>
+    <string name="download_attachment">Mentés</string>
+    <string name="broken_image">Ismeretlen vagy hibás képformátum</string>
+    <string name="attachment_too_large">A fájl mérete (%1$s) meghaladja a limitet (%2$s). Kicsit fogyózni kéne!</string>
+
+    <string name="failed_to_download">A letöltés sikertelen</string>
+    <string name="failed_to_save_download">A letöltött fájl mentése nem sikerült</string>
+    <string name="failed_to_open_file">Nincs app, ami meg tudná nyitni ezt a fájlt</string>
+    <string name="failed_empty_password">Nem változott: üres jelszó</string>
+    <string name="failed_credential_confirmation">Hibás megerősítő kód</string>
+
+    <string name="contacts_section_contacts">Telefon névjegyek</string>
+    <string name="contacts_section_directory">Katalógus</string>
+
+    <string name="email">Email</string>
+    <string name="email_required">Email szükséges</string>
+    <string name="confirm">Megerősítés</string>
+    <string name="validation_example">Csak számokat üss, ne smileyt :)</string>
+    <string name="enter_confirmation_code">Írd be a megerősítő kódot</string>
+    <string name="hint_add_by_id">Írd be a csoport vagy felhasználó ID-ját</string>
+    <string name="hint_search_tags">Keresés címkék alapján</string>
+    <string name="topic_not_found_or_invalid">A beszélgetés nem található vagy hibás</string>
+    <string name="sending_disabled">Nem elérhető</string>
+    <string name="download_title">CyberWire letöltés</string>
+    <string name="some_permissions_missing">Engedélyezd az összes kért jogosultságot!</string>
+    <string name="unable_to_attach_file">Nem sikerült csatolni a fájlt</string>
+    <string name="canceled">megszakítva</string>
+    <string name="login_rejected">Bejelentkezés elutasítva</string>
+    <string name="email_rejected">Email elutasítva</string>
+    <string name="invalid_confirmation_code">Érvénytelen kód</string>
+    <string name="new_message_channel_name">Új üzenet</string>
+    <!-- Used in push notifications -->
+    <string name="new_message">Új üzenet</string>
+    <string name="new_message_channel_description">Új üzeneted érkezett (nem a NAV-tól)</string>
+    <string name="request_pass_reset_title">Jelszó visszaállítás</string>
+    <string name="request">Kérés</string>
+    <string name="forgot_password">Elfelejtett jelszó</string>
+    <string name="invalid_or_unknown_credential">Érvénytelen vagy ismeretlen cím</string>
+    <string name="user_not_found">Nem található</string>
+    <string name="topic_tags">Címkék, vesszővel elválasztva</string>
+    <string name="sender_unknown">Ismeretlen feladó</string>
+    <string name="action_archive">Archiválás</string>
+    <string name="archived_chats">Archivált csevegések</string>
+    <string name="action_show_archive">Archivált beszélgetések</string>
+    <string name="request_new_chat_title">Új csevegés</string>
+    <string name="request_new_chat_message">Meghívást kaptál egy új beszélgetésre. Mit lépsz?</string>
+    <string name="new_chat_accept">Elfogadás</string>
+    <string name="new_chat_ignore">Ignorálás</string>
+    <string name="new_chat_block">Tiltás</string>
+    <!-- Push értesítések és új chat -->
+    <string name="new_chat">Új csevegés</string>
+    <string name="messages_not_readable">Nincs jogosultságod az új üzenetekhez (titkos CIA anyagok?)</string>
+    <string name="deleted">törölve</string>
+    <string name="peers_messaging_disabled">A partner üzenetküldése le van tiltva</string>
+    <string name="action_enable">Engedélyezés</string>
+    <string name="find">Keresés</string>
+    <string name="by_id">ID alapján</string>
+    <string name="group">Csoport</string>
+    <string name="id_required">ID megadása kötelező</string>
+    <string name="settings">Beállítások</string>
+    <string name="no_results">Nincs találat (próbáld a Google-t 😅)</string>
+    <string name="file_name_label">Fájlnév:</string>
+    <string name="content_type_label">Tartalom típusa:</string>
+    <string name="image_size_label">Méret:</string>
+    <string name="topic_blocked">Letiltva</string>
+    <string name="topic_archived">Archiválva</string>
+    <string name="action_unarchive">Visszaállítás</string>
+    <string name="action_invite">Meghívás</string>
+    <string name="tags_management">Címkék</string>
+    <string name="contacts">Kapcsolatok</string>
+    <string name="manage">Kezelés</string>
+    <string name="delete_credential_title">Kapcsolat törlése</string>
+    <string name="delete_credential_confirmation">Biztosan el akarod távolítani: %1$s:%2$s?</string>
+    <string name="leave_conversation">Kilépés a beszélgetésből</string>
+    <string name="confirm_delete_account">Biztosan végleg törölni akarod a fiókodat? Ez visszafordíthatatlan (mint a hajvágás egy borbélynál 😅).</string>
+    <string name="block_contact">Kapcsolat tiltása</string>
+    <string name="report_contact">Kapcsolat jelentése</string>
+    <string name="report_group">Csoport jelentése</string>
+    <string name="clear_messages">Üzenetek törlése</string>
+    <string name="manage_members">Tagok kezelése</string>
+    <string name="block_and_report">Tiltás és jelentés</string>
+    <string name="confirm_contact_ban">%1$s tiltása?</string>
+    <string name="confirm_report">%1$s tiltása és jelentése?</string>
+    <string name="terms_of_use">Felhasználási feltételek</string>
+    <string name="contact_us">Lépj velünk kapcsolatba</string>
+    <string name="privacy_policy">Adatvédelmi irányelvek</string>
+    <string name="button_hint_start_new_chat">Új csevegés indítása</string>
+    <string name="app_server">Szerver</string>
+    <string name="full_name_required">Teljes név kötelező</string>
+    <string name="outgoing_call">Kimenő hívás</string>
+    <string name="incoming_call">Bejövő hívás</string>
+
+    <!-- Alapértelmezett nevek és engedélyek -->
+    <string name="default_contact_name">CyberWire felhasználó %1$s</string>
+    <string name="permission_missing">Hiányzik a szükséges engedély</string>
+    <string name="enter_search_query">Írd be, mit keresel</string>
+    <string name="image_caption_hint">Kép leírás</string>
+    <string name="action_download">Letöltés</string>
+    <string name="tinode_image" translatable="false">cyberware_image</string>
+    <string name="tinode_video" translatable="false">cyberware_video</string>
+    <string name="invalid_content">érvénytelen tartalom</string>
+    <string name="failed">sikertelen</string>
+    <string name="processing">feldolgozás folyamatban… (türelem, nem kávéfőző vagyok)</string>
+    <string name="incognito_mode_enabled">Inkognitó mód</string>
+    <string name="about_the_app">Az alkalmazásról</string>
+    <string name="general">Általános</string>
+    <string name="delete_account">Fiók törlése</string>
+    <string name="help">Súgó</string>
+    <string name="security">Biztonság</string>
+    <string name="notifications">Értesítések</string>
+    <string name="user_tags_description">Mások ezek alapján találhatnak rád</string>
+    <string name="help_explained">Támogatás, jogi infók, névjegy</string>
+    <string name="account_security_explained">Jelszó, jogosultságok, fióktörlés</string>
+    <string name="topic_tags_description">Mások a címkék alapján találhatják meg a csoportot</string>
+    <string name="delete_group">Csoport törlése</string>
+    <string name="topic_default_permissions_explained">Az új tagok automatikusan ezeket a jogosultságokat kapják (mint a kezdő Pokémon trénerek 😅).</string>
+    <string name="user_default_permissions_explained">Mások ezekkel a jogosultságokkal kezdenek beszélgetést veled</string>
+    <string name="confirm_delmsg_for_all">Biztosan törölni akarod az összes üzenetet mindenkinél?</string>
+    <string name="confirm_delmsg_for_self">Biztos törlöd az összes üzenetet? (Csak nálad fog eltűnni, mások röhögnek tovább.)</string>
+    <string name="licenses">Licenszek</string>
+    <string name="invalid_file" translatable="false">érvénytelen</string>
+    <string name="blocked_contacts">Letiltott kapcsolatok</string>
+    <string name="action_restore">Feloldás</string>
+    <string name="send_to">Küldés ide…</string>
+    <string name="never">soha</string>
+    <string name="just_now">épp az imént</string>
+
+    <string name="image_too_small">A kép túl kicsi (pixelvadászat?)</string>
+    <string name="this_is_channel">Ez egy csatorna</string>
+    <string name="channel_explained">A csatornák végtelen számú olvasót engednek, de csak olvasni tudnak. Ez a választás végleges.</string>
+    <string name="channel">csatorna</string>
+    <string name="unavailable">nem elérhető</string>
+    <string name="picture">Kép</string>
+    <string name="attachment">Melléklet</string>
+    <string name="unknown">Ismeretlen</string>
+    <string name="form">Űrlap</string>
+    <string name="accept_avatar_button_hint">Avatar elfogadása</string>
+    <string name="next_button_hint">Következő</string>
+    <string name="your_name">Neved</string>
+    <string name="description_optional">Leírás (opcionális)</string>
+    <string name="change_avatar">Avatar cseréje</string>
+    <string name="badge_verified">Ellenőrzött / hivatalos</string>
+    <string name="badge_staff">Admin kezeli</string>
+    <string name="badge_danger">Gyanús / veszélyes</string>
+    <string name="description">Leírás</string>
+    <string name="group_security_explained">Jogosultságok, kilépés vagy jelentés</string>
+    <string name="action_edit">Szerkesztés</string>
+    <string name="action_save">Mentés</string>
+    <string name="online_now">épp online</string>
+    <string name="topic_settings">Beszélgetés beállításai</string>
+    <string name="action_reply">Válasz</string>
+    <string name="action_forward">Továbbítás</string>
+    <string name="forward_to">Továbbítás ide…</string>
+    <string name="hint_search_contacts">Kapcsolatok keresése</string>
+    <string name="report_channel">Csatorna jelentése</string>
+    <string name="hint_contact_name">Kapcsolat neve</string>
+    <!-- Hangüzenetek -->
+    <string name="record_audio_button_hint">Tartsd lenyomva a hangüzenet rögzítéséhez</string>
+    <string name="audio">Hang</string>
+    <string name="unable_to_play_audio">Ezt a hangüzenetet nem lehet lejátszani (talán túl sok a háttérzaj a konyhából 🍳).</string>
+    <string name="button_hint_start_audio">Hangfelvétel indítása</string>
+    <string name="stop_recording_button_hint">Felvétel leállítása</string>
+    <string name="delete_recording_hint">Felvétel eldobása</string>
+    <string name="audio_recording_failed">A hangfelvétel nem sikerült</string>
+    <string name="play_record_audio_button_hint">Felvett hang lejátszása</string>
+    <string name="pause_audio_button_hint">Lejátszás szüneteltetése</string>
+    <string name="lock_recording_for_long_messages">Felvétel rögzítése hosszú üzenetekhez (rádiós műsor, valaki? 📻)</string>
+
+    <!-- Hívások -->
+    <string name="missed_call">nem fogadott</string>
+    <string name="declined_call">elutasítva</string>
+    <string name="disconnected_call">megszakadt</string>
+    <string name="cancelled_call">megszakítva</string>
+    <string name="connecting_call">kapcsolódás</string>
+    <string name="in_progress_call">folyamatban</string>
+    <string name="busy_call">foglalt (mint a mamád vasárnap délben)</string>
+    <string name="toggle_camera_button">Kamera váltása</string>
+    <string name="toggle_microphone_button">Mikrofon némítása / feloldása</string>
+    <string name="finish_call_button">Hívás befejezése</string>
+    <string name="video_calls_unavailable">Videóhívás nem elérhető</string>
+    <string name="copied_to_clipboard">Vágólapra másolva</string>
+    <string name="image_preview">Kép előnézet</string>
+    <string name="image_download_success">Kép elmentve a galériába</string>
+    <string name="tags_not_found">Nincsenek címkék definiálva. Adj hozzá párat!</string>
+    <string name="edited">szerkesztve</string>
+    <string name="video">Videó</string>
+    <string name="video_caption_hint">Videó címe</string>
+    <string name="video_preview">Videó előnézet</string>
+    <string name="broken_video">Érvénytelen vagy ismeretlen videóformátum</string>
+    <string name="unable_to_play_video">Nem lehet lejátszani a videót</string>
+    <string name="video_call_channel_name">Videóhívások</string>
+    <string name="video_call_channel_description">Videó- és hanghívások</string>
+    <string name="tinode_video_call">CyberWire Videóhívás</string>
+    <string name="answer_call">Válasz</string>
+    <string name="decline_call">Elutasítás</string>
+    <string name="document_preview">Dokumentum előnézet</string>
+    <string name="action_call">Hívás</string>
+    <string name="tinode_audio_call">CyberWire Hívás</string>
+    <string name="unable_to_place_call">Nem lehet létrehozni a hívást</string>
+    <!-- Telefon & SMS -->
+    <string name="phone_sms_explained">SMS-ben küldünk megerősítő kódot a fenti számra (nem reklám, ígérjük 📲).</string>
+    <string name="phone_number_required">Érvényes telefonszám szükséges</string>
+    <string name="phone_number_hint">Mobiltelefonszám</string>
+    <string name="unable_to_use_service">A szolgáltatás jelenleg nem elérhető. Próbáld újra később (vagy igyál egy kávét ☕).</string>
+    <string name="email_colon">Email:</string>
+    <string name="phone_colon">Telefon:</string>
+    <string name="current_email">Jelenlegi email</string>
+    <string name="new_email">Új email</string>
+    <string name="email_msg_explained">Üzenetben küldünk megerősítő kódot a fenti címre</string>
+    <string name="current_phone">Jelenlegi telefonszám</string>
+    <string name="request_code">Kód kérése</string>
+    <string name="change_email">Email csere</string>
+    <string name="change_phone_num">Telefonszám csere</string>
+    <string name="change_credential">Adat módosítása</string>
+    <string name="confirmation_code_sent">Megerősítő kód elküldve</string>
+    <string name="request_pass_reset_code">Jelszó-visszaállító kód kérése</string>
+    <string name="i_have_code">Van kódom</string>
+    <string name="confirmation_code_required">Megerősítő kód szükséges</string>
+    <string name="password_changed">Jelszó megváltoztatva</string>
+    <string name="my_code">Az én kódom</string>
+    <string name="scan_code">Kód beolvasása</string>
+    <string name="hint_enter_code">Konfigurációs kód</string>
+    <string name="code_required">Kód szükséges</string>
+    <string name="configure_connection">Kapcsolat beállítása</string>
+    <string name="calling_not_supported">A hívás nem támogatott</string>
+    <string name="display_code">QR-kód megjelenítése</string>
+
+    <!-- Rögzítések és saját üzenetek -->
+    <string name="action_pin">Rögzítés</string>
+    <string name="action_unpin">Rögzítés feloldása</string>
+    <string name="pinned_messages">Rögzített üzenetek</string>
+    <string name="self_topic_title">Mentett üzenetek</string>
+    <string name="self_topic_description">Jegyzetek, üzenetek, linkek, fájlok – hogy ne vesszenek el (mint a zoknid párja 🧦).</string>
+    <string name="message_deleted">üzenet törölve</string>
+    <string name="message_not_found">nem található</string>
+    <string name="delete_message_title_single">Üzenet törlése</string>
+    <string name="delete_message_title_plural">Üzenetek törlése</string>
+    <string name="delete_for_peer">Törlés nála is: %1$s</string>
+    <string name="delete_for_everybody">Törlés mindenkinél</string>
+    <string name="confirm_delete_message_single">Biztos törlöd az üzenetet?</string>
+    <string name="confirm_delete_message_plural">Biztos törlöd ezeket az üzeneteket?</string>
+
+    <!-- Médiafeltöltés -->
+    <string name="take_photo">Kamera</string>
+    <string name="select_from_gallery">Galéria</string>
+    <string name="record_video">Videó</string>
+    <string name="alias">Álnév:</string>
+    <string name="alias_plain">Álnév</string>
+    <string name="error_invalid_alias">érvénytelen formátum</string>
+    <string name="alias_already_taken">már foglalt (próbálj kreatívabb lenni 😏)</string>
+    <string name="camera_not_accessible">A kamera nem elérhető</string>
+    <string name="unable_to_open_gallery">Nem lehet megnyitni a galériát</string>
+    <string name="incognito_mode_explainer">Online státusz elrejtése (Batman módban 🦇)</string>
+</resources>

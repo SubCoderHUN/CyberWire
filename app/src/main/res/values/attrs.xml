@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="GradientTitleTextView">
+        <attr name="gtvSpeed" format="float" />
+    </declare-styleable>
+</resources>

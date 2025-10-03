@@ -1,0 +1,428 @@
+package co.tinode.tindroid.services;
+
+import android.annotation.SuppressLint;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.Person;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.IconCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import co.tinode.tindroid.Cache;
+import co.tinode.tindroid.CallInProgress;
+import co.tinode.tindroid.ChatsActivity;
+import co.tinode.tindroid.Const;
+import co.tinode.tindroid.HangUpBroadcastReceiver;
+import co.tinode.tindroid.MessageActivity;
+import co.tinode.tindroid.R;
+import co.tinode.tindroid.UiUtils;
+import co.tinode.tindroid.account.Utils;
+import co.tinode.tindroid.db.BaseDb;
+import co.tinode.tindroid.db.MessageDb;
+import co.tinode.tindroid.db.StoredMessage;
+import co.tinode.tindroid.db.StoredTopic;
+import co.tinode.tindroid.format.FontFormatter;
+import co.tinode.tindroid.media.VxCard;
+import co.tinode.tinodesdk.ComTopic;
+import co.tinode.tinodesdk.MeTopic;
+import co.tinode.tinodesdk.Tinode;
+import co.tinode.tinodesdk.Topic;
+import co.tinode.tinodesdk.User;
+import co.tinode.tinodesdk.model.Drafty;
+import android.graphics.BitmapFactory; // Ezt a sort add hozzá az importokhoz a fájl elején
+import android.util.Base64;
+
+/**
+ * Receive and handle (e.g. show) a push notification message.
+ */
+public class FBaseMessagingService extends FirebaseMessagingService {
+
+    private static final String TAG = "FBaseMessagingService";
+
+    // Width and height of the large icon (avatar).
+    private static final int AVATAR_SIZE = 128;
+
+
+    @Override
+    public void onNewToken(@NonNull String token) {
+        super.onNewToken(token);
+        Cache.getTinode().setDeviceToken(token);
+    }
+    private android.util.Pair<CharSequence, Bitmap> extractTextAndImage(Drafty content) {
+        if (content == null) {
+            return new android.util.Pair<>("", null);
+        }
+
+        CharSequence text = content.format(new FontFormatter(this, 14f));
+        Bitmap image = null;
+
+        if (content.getEntities() != null) {
+            for (Drafty.Entity ent : content.getEntities()) {
+                if (ent.tp != null && ent.tp.equals("IM") && ent.data != null) {
+                    try {
+                        // JAVÍTÁS: A 'val' mező Base64 stringként jön, nem byte array-ként.
+                        Object val = ent.data.get("val");
+                        if (val instanceof String) {
+                            // JAVÍTÁS: A standard android.util.Base64 használata a helyes.
+                            byte[] bits = Base64.decode((String) val, Base64.DEFAULT);
+                            if (bits != null) {
+                                image = BitmapFactory.decodeByteArray(bits, 0, bits.length);
+                                break; // Csak az első képet használjuk.
+                            }
+                        } else if (val instanceof byte[]) {
+                            // Visszamenőleges kompatibilitás, ha mégis byte[] érkezne.
+                            byte[] bits = (byte[]) val;
+                            image = BitmapFactory.decodeByteArray(bits, 0, bits.length);
+                            break; // Csak az első képet használjuk.
+                        }
+                    } catch (Exception ex) {
+                        Log.w(TAG, "Failed to decode bitmap from Drafty", ex);
+                    }
+                }
+            }
+        }
+        return new android.util.Pair<>(text, image);
+    }
+    @Override
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        // There are two types of messages: data messages and notification messages.
+        // Data messages are handled here in onMessageReceived whether the app is in the foreground or background.
+        // Data messages are the type traditionally used with GCM.
+        // Notification messages are only received here in onMessageReceived when the app is in the foreground.
+        // When the app is in the background an automatically generated notification is displayed.
+        // When the user taps on the notification they are returned to the app.
+        // Messages containing both notification and data payloads are treated as notification messages.
+        // The Firebase console always sends notification messages.
+        // For more see: https://firebase.google.com/docs/cloud-messaging/concept-options
+
+        final Tinode tinode = Cache.getTinode();
+        NotificationCompat.Builder builder;
+        final String topicName;
+
+        // Check if message contains a data payload.
+        if (!remoteMessage.getData().isEmpty()) {
+            Map<String, String> data = remoteMessage.getData();
+            String what = data.get("what");
+            topicName = data.get("topic");
+
+            if (topicName == null || what == null) {
+                Log.w(TAG, "Invalid payload: " + (what == null ? "what" : "topic") + " is NULL");
+                return;
+            }
+
+            String webrtc = data.get("webrtc");
+            String senderId = data.get("xfrom");
+
+            // Update data state, maybe fetch missing data.
+            String token = Utils.getLoginToken(getApplicationContext());
+            String selectedTopic = Cache.getSelectedTopicName();
+            tinode.oobNotification(data, token, "started".equals(webrtc) || topicName.equals(selectedTopic));
+
+            if (webrtc != null) {
+                handleCallNotification(webrtc, tinode.isMe(senderId), data);
+                return;
+            }
+
+            if (Boolean.parseBoolean(data.get("silent"))) {
+                return;
+            }
+
+            String visibleTopic = UiUtils.getVisibleTopic();
+            if (topicName.equals(visibleTopic)) {
+                return;
+            }
+
+            Topic.TopicType tp = Topic.getTopicTypeByName(topicName);
+            if (tp != Topic.TopicType.P2P && tp != Topic.TopicType.GRP) {
+                Log.w(TAG, "Unexpected topic type=" + tp);
+                return;
+            }
+
+            if ("msg".equals(what)) {
+                // It's a new message.
+                ComTopic<VxCard> topic = (ComTopic<VxCard>) tinode.getTopic(topicName);
+                if (topic == null || topic.getLocal() == null) {
+                    Log.w(TAG, "Message received for an unknown topic: " + topicName);
+                    return;
+                }
+
+                MeTopic<VxCard> meTopic = tinode.getMeTopic();
+                VxCard me = meTopic != null ? (VxCard) meTopic.getPub() : null;
+
+                Person.Builder mePersonBuilder = new Person.Builder()
+                        .setName(me != null && !TextUtils.isEmpty(me.fn) ? me.fn : getString(R.string.sender_unknown));
+                Bitmap myIcon = UiUtils.avatarBitmap(this, me, Topic.TopicType.P2P, tinode.getMyId(), AVATAR_SIZE);
+                if (myIcon != null) {
+                    mePersonBuilder.setIcon(IconCompat.createWithBitmap(myIcon));
+                }
+                Person self = mePersonBuilder.build();
+
+                NotificationCompat.MessagingStyle messagingStyle = new NotificationCompat.MessagingStyle(self);
+                if (tp == Topic.TopicType.GRP) {
+                    messagingStyle.setConversationTitle(topic.getPub() != null ? topic.getPub().fn : topicName);
+                    messagingStyle.setGroupConversation(true);
+                }
+
+                SQLiteDatabase db = BaseDb.getInstance().getReadableDatabase();
+                try (Cursor c = MessageDb.query(db, ((StoredTopic) topic.getLocal()).id, topic.getRead())) {
+                    if (c != null && c.moveToFirst()) {
+                        do {
+                            StoredMessage msg = StoredMessage.readMessage(c, -1);
+                            if (msg == null) continue;
+
+                            Person sender;
+                            if (tinode.isMe(msg.from)) {
+                                sender = self;
+                            } else {
+                                User<VxCard> from = tinode.getUser(msg.from);
+                                Person.Builder personBuilder = new Person.Builder();
+                                String senderName = (from != null && from.pub != null && !TextUtils.isEmpty(from.pub.fn)) ?
+                                        from.pub.fn : getString(R.string.sender_unknown);
+                                personBuilder.setName(senderName);
+                                Bitmap senderAvatar = UiUtils.avatarBitmap(this, from != null ? from.pub : null,
+                                        Topic.TopicType.P2P, msg.from, AVATAR_SIZE);
+                                if (senderAvatar != null) {
+                                    personBuilder.setIcon(IconCompat.createWithBitmap(senderAvatar));
+                                }
+                                sender = personBuilder.build();
+                            }
+
+                            // Kinyerjük a szöveget és a képet a Drafty objektumból.
+                            android.util.Pair<CharSequence, Bitmap> parts = extractTextAndImage(msg.content);
+                            CharSequence messageText = parts.first;
+                            Bitmap image = parts.second;
+
+                            NotificationCompat.MessagingStyle.Message notificationMessage;
+                            if (image != null) {
+                                // Ha van kép, a kép-specifikus konstruktort használjuk.
+                                notificationMessage = new NotificationCompat.MessagingStyle.Message(messageText, msg.ts.getTime(), sender)
+                                        .setData("image/jpeg", UiUtils.bitmapToUri(this, image, "img-" + msg.getDbId()));
+                            } else {
+                                // Ha nincs kép, a normál konstruktort használjuk.
+                                notificationMessage = new NotificationCompat.MessagingStyle.Message(messageText, msg.ts.getTime(), sender);
+                            }
+
+                            messagingStyle.addMessage(notificationMessage);
+
+                        } while (c.moveToNext());
+                    }
+                } catch (Exception ex) {
+                    Log.w(TAG, "Failed to fetch messages for notification", ex);
+                    // Fallback to old notification style should not be needed with this logic.
+                    return;
+                }
+
+                if (messagingStyle.getMessages().isEmpty()) {
+                    // Do not show notification if there are no messages to show.
+                    // This could happen if DB is not updated yet.
+                    return;
+                }
+
+                builder = new NotificationCompat.Builder(this, Const.NEWMSG_NOTIFICATION_CHAN_ID)
+                        .setSmallIcon(R.drawable.ic_icon_push)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setColor(ContextCompat.getColor(this, R.color.colorNotificationBackground))
+                        .setAutoCancel(true)
+                        .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                        .setStyle(messagingStyle);
+
+                Bitmap topicIcon = UiUtils.avatarBitmap(this, topic.getPub(), tp, topicName, AVATAR_SIZE);
+                if (topicIcon != null) {
+                    builder.setLargeIcon(topicIcon);
+                }
+            } else if ("sub".equals(what)) {
+                // New subscription notification. This is not a message, handle as a simple notification.
+                String senderName = null;
+                Bitmap senderIcon = null;
+                if (senderId != null) {
+                    User<VxCard> sender = tinode.getUser(senderId);
+                    if (sender != null && sender.pub != null) {
+                        senderName = sender.pub.fn;
+                        senderIcon = UiUtils.avatarBitmap(this, sender.pub, Topic.TopicType.P2P, senderId, AVATAR_SIZE);
+                    }
+                }
+
+                ComTopic<VxCard> topic = (ComTopic<VxCard>) tinode.getTopic(topicName);
+                String title = getString(R.string.new_chat);
+                CharSequence body;
+                Bitmap avatar;
+                if (tp == Topic.TopicType.P2P) {
+                    body = senderName;
+                    avatar = senderIcon;
+                } else { // GRP
+                    VxCard pub = topic != null ? topic.getPub() : null;
+                    body = pub != null && !TextUtils.isEmpty(pub.fn) ? pub.fn : getString(R.string.placeholder_topic_title);
+                    avatar = UiUtils.avatarBitmap(this, pub, tp, topicName, AVATAR_SIZE);
+                }
+
+                builder = new NotificationCompat.Builder(this, Const.NEWMSG_NOTIFICATION_CHAN_ID)
+                        .setSmallIcon(R.drawable.ic_icon_push)
+                        .setLargeIcon(avatar)
+                        .setColor(ContextCompat.getColor(this, R.color.colorNotificationBackground))
+                        .setContentTitle(title)
+                        .setContentText(body)
+                        .setAutoCancel(true)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+            } else {
+                return; // Other 'what' types are not meant to produce notifications.
+            }
+        } else if (remoteMessage.getNotification() != null) {
+            RemoteMessage.Notification remote = remoteMessage.getNotification();
+            topicName = remote.getTag();
+            builder = composeNotification(remote);
+        } else {
+            return;
+        }
+
+        showNotification(builder, topicName);
+    }
+
+    private void showNotification(NotificationCompat.Builder builder, String topicName) {
+        NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (nm == null) {
+            Log.e(TAG, "NotificationManager is not available");
+            return;
+        }
+
+        // Workaround for an FCM bug or poor documentation.
+        int requestCode = 0;
+
+        Intent intent;
+        if (TextUtils.isEmpty(topicName)) {
+            // Communication on an unknown topic
+            intent = new Intent(this, ChatsActivity.class);
+        } else {
+            requestCode = topicName.hashCode();
+            // Communication on a known topic
+            intent = new Intent(this, MessageActivity.class);
+            intent.putExtra(Const.INTENT_EXTRA_TOPIC, topicName);
+        }
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, requestCode, intent,
+                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+
+        // MessageActivity will cancel all notifications by tag, which is just topic name.
+        // All notifications receive the same id 0 because id is not used.
+        nm.notify(topicName, 0, builder.setContentIntent(pendingIntent).build());
+    }
+
+    private void handleCallNotification(@NonNull String webrtc, boolean isMe, @NonNull Map<String, String> data) {
+        String seqStr = data.get("seq");
+        String topicName = data.get("topic");
+        try {
+            int seq = seqStr != null ? Integer.parseInt(seqStr) : 0;
+            if (seq <= 0) {
+                Log.w(TAG, "Invalid seq value '" + seqStr + "'");
+                return;
+            }
+            int origSeq = UiUtils.parseSeqReference(data.get("replace"));
+            switch (webrtc) {
+                case "started":
+                    // Do nothing here: the incoming call is accepted in onData.
+                    break;
+                case "accepted":
+                    CallInProgress call = Cache.getCallInProgress();
+                    if (origSeq > 0 && call != null && call.isConnected() && call.equals(topicName, origSeq)) {
+                        // The server notifies us of the call that we've already accepted. Do nothing.
+                        return;
+                    }
+                case "busy":
+                case "declined":
+                case "disconnected":
+                case "finished":
+                case "missed":
+                    if (origSeq > 0) {
+                        // Dismiss the call UI.
+                        LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
+                        final Intent intent = new Intent(this, HangUpBroadcastReceiver.class);
+                        intent.setAction(Const.INTENT_ACTION_CALL_CLOSE);
+                        intent.putExtra(Const.INTENT_EXTRA_TOPIC, topicName);
+                        intent.putExtra(Const.INTENT_EXTRA_SEQ, origSeq);
+                        lbm.sendBroadcast(intent);
+                    }
+                    break;
+                default:
+                    Log.w(TAG, "Unknown webrtc action '" + webrtc + "'");
+                    break;
+            }
+        } catch (NumberFormatException ex) {
+            Log.w(TAG, "Invalid seq value '" + seqStr + "'");
+        }
+    }
+
+    private NotificationCompat.Builder composeNotification(@NonNull RemoteMessage.Notification remote) {
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, Const.NEWMSG_NOTIFICATION_CHAN_ID);
+
+        final Resources res = getResources();
+        final String packageName = getPackageName();
+
+        return notificationBuilder
+                .setPriority(unwrapInteger(remote.getNotificationPriority(), NotificationCompat.PRIORITY_HIGH))
+                .setVisibility(unwrapInteger(remote.getVisibility(), NotificationCompat.VISIBILITY_PRIVATE))
+                .setSmallIcon(resourceId(res, remote.getIcon(), R.drawable.ic_icon_push, "drawable", packageName))
+                .setColor(unwrapColor(remote.getColor(), ContextCompat.getColor(this, R.color.colorNotificationBackground)))
+                .setContentTitle(locText(res, remote.getTitleLocalizationKey(), remote.getTitleLocalizationArgs(),
+                        remote.getTitle(), packageName))
+                .setContentText(locText(res, remote.getBodyLocalizationKey(), remote.getBodyLocalizationArgs(),
+                        remote.getBody(), packageName))
+                .setAutoCancel(true)
+                // TODO: use remote.getSound() instead of default.
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+    }
+
+    private static int unwrapInteger(Integer value, int defaultValue) {
+        return value != null ? value : defaultValue;
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private static int resourceId(Resources res, String name, int defaultId, String resourceType, String packageName) {
+        @SuppressLint("DiscouragedApi") int id = res.getIdentifier(name, resourceType, packageName);
+        return id != 0 ? id : defaultId;
+    }
+
+    private static int unwrapColor(String strColor, int defaultColor) {
+        int color = defaultColor;
+        if (strColor != null) {
+            try {
+                color = Color.parseColor(strColor);
+            } catch (IllegalArgumentException ignored) {
+            }
+        }
+        return color;
+    }
+
+    // Localized text from resource name.
+    private static String locText(Resources res, String locKey, String[] locArgs, String defaultText, String packageName) {
+        String result = defaultText;
+        if (locKey != null) {
+            @SuppressLint("DiscouragedApi") int id = res.getIdentifier(locKey, "string", packageName);
+            if (id != 0) {
+                if (locArgs != null) {
+                    result = res.getString(id, (Object[]) locArgs);
+                } else {
+                    result = res.getString(id);
+                }
+            }
+        }
+        return result;
+    }
+}

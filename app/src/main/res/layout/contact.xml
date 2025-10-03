@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="72dp"
+    android:background="@drawable/contact_background"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:paddingStart="@dimen/activity_padding"
+    android:paddingEnd="@dimen/activity_padding">
+
+    <!-- Avatar + online jelző -->
+    <RelativeLayout
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="12dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/avatar"
+            app:strokeColor="@android:color/transparent"
+            app:shapeAppearanceOverlay="@style/roundImageView"
+            app:srcCompat="@drawable/ic_person_circle" />
+
+        <!-- online dot jobb-alsó sarokban -->
+        <ImageView
+            android:id="@+id/online"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:contentDescription="@string/avatar"
+            app:srcCompat="@drawable/ic_circle"
+            android:visibility="gone" />
+
+        <!-- törölt jelzés (ha kell) -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/deleted"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            android:contentDescription="@string/unavailable"
+            app:shapeAppearanceOverlay="@style/roundImageView"
+            app:srcCompat="@drawable/ic_cancel_grey"
+            app:strokeColor="@android:color/transparent" />
+    </RelativeLayout>
+
+    <!-- Szöveg + meta (Messenger-szerű két sor) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <!-- Felső sor: Név + badge ikonok balra, idő jobbra -->
+        <LinearLayout
+            android:id="@+id/topRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/timestamp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:id="@+id/contactName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/contactListTextPrimary"
+                android:paddingEnd="6dp"
+                tools:text="Kontakt neve" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_verified"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="@string/channel"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_verified" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_staff"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/channel"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_verified_user" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_group"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/group"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_group_2"
+                app:tint="?android:attr/textColorSecondary" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_channel"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/channel"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_channel"
+                app:tint="?android:attr/textColorSecondary" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_danger"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/channel"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_danger" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintTop_toTopOf="@id/topRow"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="13:45" />
+
+        <!-- Alsó sor: státusz pipa + előnézet, jobb szélen mute/archív blokk
+             (Messenger mintájára az unread badge külön van jobbra lent) -->
+        <LinearLayout
+            android:id="@+id/bottomRow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/endIcons"
+            app:layout_constraintTop_toBottomOf="@id/topRow"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp">
+
+            <ImageView
+                android:id="@+id/messageStatus"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.9"
+                android:paddingEnd="4dp"
+                android:visibility="gone"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_done_all" />
+
+            <TextView
+                android:id="@+id/contactPriv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="?android:textAppearanceSmall"
+                tools:text="Utolsó üzenet előnézete…" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/endIcons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/topRow"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/icon_muted"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="@string/topic_muted"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_notifications_off"
+                app:tint="@color/colorGray" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_blocked"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="4dp"
+                android:contentDescription="@string/topic_blocked"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_block"
+                app:tint="@color/colorGray" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon_archived"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="4dp"
+                android:contentDescription="@string/topic_archived"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_filecab"
+                app:tint="@color/colorGray" />
+        </LinearLayout>
+
+        <!-- Unread badge: jobb alsó sarok (id marad) -->
+        <TextView
+            android:id="@+id/unreadCount"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:minWidth="20dp"
+            android:gravity="center"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/pill_counter"
+            android:textColor="@color/white"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/bottomRow"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="9+" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

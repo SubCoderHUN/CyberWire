@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reactionRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="20dp">
+
+    <!-- Nem használunk @string hivatkozást, hogy ne kelljen resources-be felvenni -->
+    <TextView
+        android:id="@+id/reactionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reakció hozzáadása"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:paddingBottom="8dp" />
+
+    <LinearLayout
+        android:id="@+id/reactionRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp">
+
+        <!-- Inline “chip” stílus, nincs szükség styles.xml-re -->
+        <TextView
+            android:id="@+id/reac_like"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:background="@android:color/transparent"
+            android:padding="4dp"
+            android:text="👍" />
+
+        <TextView
+            android:id="@+id/reac_love"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:background="@android:color/transparent"
+            android:padding="4dp"
+            android:text="❤️" />
+
+        <TextView
+            android:id="@+id/reac_laugh"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:background="@android:color/transparent"
+            android:padding="4dp"
+            android:text="😂" />
+
+        <TextView
+            android:id="@+id/reac_surprise"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:background="@android:color/transparent"
+            android:padding="4dp"
+            android:text="😮" />
+
+        <TextView
+            android:id="@+id/reac_sad"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:background="@android:color/transparent"
+            android:padding="4dp"
+            android:text="😢" />
+
+        <TextView
+            android:id="@+id/reac_angry"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="22sp"
+            android:background="@android:color/transparent"
+            android:padding="4dp"
+            android:text="😡" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "878981990233",
+    "project_id": "tinodechat-9145c",
+    "storage_bucket": "tinodechat-9145c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878981990233:android:56677ee5dc704a13b76e48",
+        "android_client_info": {
+          "package_name": "co.tinode.tindroidx"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfBnGx3H3-zC3XCy9XncWgbRByk1TSFz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
