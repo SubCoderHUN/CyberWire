@@ -76,7 +76,7 @@
     </style>
 
     <style name="sectionTitleStyle" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textColor">@color/colorDanger</item>
+        <item name="android:textColor">@color/colorUserOnlineH2</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFeatureSettings">smcp</item>
         <item name="android:layout_marginBottom">@dimen/activity_padding</item>

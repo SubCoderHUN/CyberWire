@@ -33,6 +33,8 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Lifecycle;
+import androidx.preference.PreferenceManager;
+
 import co.tinode.tindroid.media.VxCard;
 import co.tinode.tindroid.widgets.AttachmentPickerDialog;
 import co.tinode.tinodesdk.ComTopic;
@@ -292,6 +294,8 @@ public class TopicGeneralFragment extends Fragment implements MenuProvider, Util
         inflater.inflate(R.menu.menu_save, menu);
     }
 
+// A TopicGeneralFragment.java fájlban
+
     @Override
     public boolean onMenuItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -306,39 +310,47 @@ public class TopicGeneralFragment extends Fragment implements MenuProvider, Util
                 return false;
             }
 
+            // A beviteli mezők beolvasása.
             final String newTitle = ((TextView) fragmentView.findViewById(R.id.topicTitle)).getText().toString().trim();
             final String newComment = ((TextView) fragmentView.findViewById(R.id.topicComment)).getText().toString().trim();
             final String newDescription = mTopic.isGrpType() && mTopic.isOwner() ?
                     ((TextView) fragmentView.findViewById(R.id.topicDescription)).getText().toString().trim() : null;
             final String newAlias = ((TextView) fragmentView.findViewById(R.id.alias)).getText().toString().trim();
 
+            // A szerverhívás
             UiUtils.updateTopicDesc(mTopic, newTitle, newComment, newDescription, newAlias)
-                    // ...
                     .thenApply(new PromisedReply.SuccessListener<>() {
                         @Override
                         public PromisedReply<ServerMessage> onSuccess(ServerMessage unused) {
-                            if (!activity.isFinishing() && !activity.isDestroyed()) {
-                                activity.runOnUiThread(() -> {
-                                    // ---> EZT A SORT SZÚRD BE <---
-                                    // Értesítjük a MessageActivity-t, hogy frissítse magát.
-                                    // A 'forceReset = true' biztosítja, hogy a fejléc is újrarajzolódjon.
-                                    ((MessageActivity) activity).changeTopic(mTopic.getName(), true);
-
-                                    // Ez a sor marad a végén, ez lép vissza.
-                                    activity.getSupportFragmentManager().popBackStack();
-                                });
+                            if (activity.isFinishing() || activity.isDestroyed()) {
+                                return null;
                             }
+                            activity.runOnUiThread(() -> {
+                                // --- EZ A HELYES LOGIKA ---
+                                // 1. SIKERES mentés után jelezzük a MessageActivity-nek a fejléc frissítését.
+                                if (activity instanceof MessageActivity) {
+                                    ((MessageActivity) activity).changeTopic(mTopic.getName(), true);
+                                }
+
+                                // 2. SIKERES mentés után jelezzük a ChatsFragment-nek a lista frissítését.
+                                PreferenceManager.getDefaultSharedPreferences(activity)
+                                        .edit()
+                                        .putBoolean("chats_list_needs_refresh", true)
+                                        .apply();
+
+                                // 3. Visszalépünk a képernyőről.
+                                activity.getSupportFragmentManager().popBackStack();
+                            });
                             return null;
                         }
                     })
-// ...
-
-                    .thenCatch(new UiUtils.ToastFailureListener(activity));
+                    .thenCatch(new UiUtils.ToastFailureListener(activity)); // Hiba esetén csak egy Toast jelenik meg, nem lépünk vissza.
 
             return true;
         }
         return false;
     }
+
 
     @Override
     public void handleMedia(Bundle args) {
